@@ -3,16 +3,15 @@
  * This is the spec file that Jasmine will read and contains
  * all of the tests that will be run against your application.
  */
-
 /* We're placing all of our tests within the $() function,
  * since some of these tests may require DOM elements. We want
  * to ensure they don't run until the DOM is ready.
  */
 $(function() {
     /* This is our first test suite - a test suite just contains
-    * a related set of tests. This suite is all about the RSS
-    * feeds definitions, the allFeeds variable in our application.
-    */
+     * a related set of tests. This suite is all about the RSS
+     * feeds definitions, the allFeeds variable in our application.
+     */
     describe('RSS Feeds', function() {
         /* This is our first test - it tests to make sure that the
          * allFeeds variable has been defined and that it is not
@@ -32,12 +31,12 @@ $(function() {
          * and that the URL is not empty.
          */
 
-         it('all url are defined and non-empty', function() {
-           allFeeds.forEach(function(feed){
-             expect(feed.url).toBeDefined();
-             expect(feed.url.length).not.toBe(0);
-           });
-         });
+        it('all url are defined and non-empty', function() {
+            allFeeds.forEach(function(feed) {
+                expect(feed.url).toBeDefined();
+                expect(feed.url.length).not.toBe(0);
+            });
+        });
 
 
         /* TODO: Write a test that loops through each feed
@@ -46,17 +45,17 @@ $(function() {
          */
 
         it('all names are defined and non-empty', function() {
-          allFeeds.forEach(function(feed){
-            expect(feed.name).toBeDefined();
-            expect(feed.name.length).not.toBe(0);
-          });
+            allFeeds.forEach(function(feed) {
+                expect(feed.name).toBeDefined();
+                expect(feed.name.length).not.toBe(0);
+            });
         });
 
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
-    describe("The menu", function(){
+    describe("The menu", function() {
 
 
         /* TODO: Write a test that ensures the menu element is
@@ -64,20 +63,20 @@ $(function() {
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
-         var isHidden;
-         var body = $('body');
-         it('is hidden by default', function(){
-           isHidden = body.hasClass('menu-hidden');
-           expect(isHidden).toBe(true);
-         });
+        var isHidden;
+        var body = $('body');
+        it('is hidden by default', function() {
+            isHidden = body.hasClass('menu-hidden');
+            expect(isHidden).toBe(true);
+        });
 
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
-          it('visibility changes when clicked', function(){
+        /* TODO: Write a test that ensures the menu changes
+         * visibility when the menu icon is clicked. This test
+         * should have two expectations: does the menu display when
+         * clicked and does it hide when clicked again.
+         */
+        it('visibility changes when clicked', function() {
             body.toggleClass('menu-hidden', true); // so doesn't depend on initial settings.
             menuIcon = $('.menu-icon-link');
 
@@ -88,11 +87,11 @@ $(function() {
             menuIcon.click();
             isHidden = body.hasClass('menu-hidden');
             expect(isHidden).toBe(true); // true again after second click
-          });
+        });
 
     });
     /* TODO: Write a new test suite named "Initial Entries" */
-    describe('Initial Entries', function(){
+    describe('Initial Entries', function() {
 
 
         /* TODO: Write a test that ensures when the loadFeed
@@ -102,45 +101,47 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
-         beforeEach(function(done) {
-           loadFeed(0, done);
-         });
+        beforeEach(function(done) {
+            loadFeed(0, done);
+        });
 
 
-         it('are appended to feed container', function(done){
-           expect($(".feed").find(".entry").length).not.toBe(0);
-           done();
-         });
+        it('are appended to feed container', function(done) {
+            expect($(".feed").find(".entry").length).not.toBe(0);
+            done();
+        });
 
-   });
+    });
     /* TODO: Write a new test suite named "New Feed Selection" */
-    describe("New Feed Selection", function(){
+    describe("New Feed Selection", function() {
 
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-         var firstContent = [];
-         var secondContent = [];
+        var firstContent = [];
+        var secondContent = [];
 
-         beforeEach(function(done) {
-           loadFeed(0, function(){
-             $(".feed").find("h2").each(function(index, element){
-               firstContent.push(element.textContent);
-             });
-             loadFeed(1, function(){
-               $(".feed").find("h2").each(function(index, element){
-                 secondContent.push(element.textContent);
-               });
-               done();
-             });
-           });
-         });
+        beforeEach(function(done) {
+          // loads two different feeds and checks content is different.
+          // assumes there are at least two feeds and that they are different.
+            loadFeed(0, function() {
+                $(".feed").find("h2").each(function(index, element) {
+                    firstContent.push(element.textContent);
+                });
+                loadFeed(1, function() {
+                    $(".feed").find("h2").each(function(index, element) {
+                        secondContent.push(element.textContent);
+                    });
+                    done();
+                });
+            });
+        });
 
-         it('loads different content', function(done){
-           expect(firstContent).not.toEqual(secondContent);
-           done();
-         });
-   });
+        it('loads different content', function(done) {
+            expect(firstContent).not.toEqual(secondContent);
+            done();
+        });
+    });
 }());
